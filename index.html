@@ -110,11 +110,10 @@
       <img src="image1.jpg" class="active" />
       <img src="image2.jpg" />
       <img src="image3.jpg" />
-    
     </div>
   </div>
 
-  <!-- Free Fire Glory Zone (hidden by default) -->
+  <!-- Free Fire Glory Zone -->
   <div class="container" id="ffZone" style="margin-top: 30px; display:none;">
     <h1 style="color:#ff4500;">🔥 Gauri’s Free Fire Glory Zone 🔫</h1>
     <p style="font-size:18px;">
@@ -131,7 +130,10 @@
     </div>
   </div>
 
-  <audio id="bgSong" src="Song1.mp3"></audio>
+  <!-- Background Music -->
+  <audio id="bgSong" src="music.mpeg" loop></audio>
+
+  <!-- Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
   <script>
@@ -163,7 +165,7 @@ Happy Birthday to the smallest, funniest cousin in the squad —
       mainHeading.textContent = "🎉 Gadha Pahalwan Enters the Chat";
       mainHeading.classList.add("animate__rubberBand");
       confetti({ particleCount: 120, spread: 100, origin: { y: 0.6 } });
-      song.play();
+      song.play(); // 🎵 Start background music
       btn2.style.display = "block";
     });
 
@@ -186,6 +188,7 @@ Happy Birthday to the smallest, funniest cousin in the squad —
       btn4.style.display = "none";
       document.getElementById("ffZone").style.display = "block";
       document.getElementById("ffZone").scrollIntoView({ behavior: "smooth" });
+      startFFCarousel();
     });
 
     function launchBalloons() {
@@ -224,8 +227,6 @@ Happy Birthday to the smallest, funniest cousin in the squad —
         ffSlides[ffIndex].classList.add("active");
       }, 2500);
     }
-
-    startFFCarousel();
   </script>
 </body>
 </html>
