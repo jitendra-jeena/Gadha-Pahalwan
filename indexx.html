@@ -1,0 +1,267 @@
+<!-- Full updated HTML with fixes -->
+<!-- Removed age line, removed pause buttons, message updated -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🎉 The Gadha Pahalwan Birthday Experience</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(135deg, #ffe4ec, #fdfbfb);
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    canvas.fireworks {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .container {
+      position: relative;
+      z-index: 2;
+      max-width: 100%;
+      margin: auto;
+      background: #ffffffdd;
+      padding: 24px;
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      font-size: 30px;
+      color: #d63384;
+      margin: 24px 0;
+    }
+
+    button {
+      display: block;
+      width: 90%;
+      max-width: 300px;
+      margin: 18px auto;
+      padding: 14px 18px;
+      font-size: 17px;
+      border-radius: 12px;
+      border: none;
+      background-color: #ff4da6;
+      color: white;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    button:hover {
+      background-color: #e60073;
+      transform: scale(1.05);
+    }
+
+    .typing {
+      font-size: 19px;
+      color: #444;
+      padding: 12px;
+      white-space: pre-wrap;
+      border-radius: 10px;
+      min-height: 100px;
+    }
+
+    .carousel {
+      position: relative;
+      margin: 20px auto;
+    }
+
+    .carousel img {
+      width: 100%;
+      height: auto;
+      border-radius: 14px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+      display: none;
+    }
+
+    .carousel img.active {
+      display: block;
+    }
+
+    .balloon {
+      position: fixed;
+      bottom: -100px;
+      width: 50px;
+      height: 70px;
+      background: red;
+      border-radius: 50%;
+      animation: floatUp 7s linear infinite;
+      z-index: 10;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-130vh); opacity: 0; }
+    }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 22px; }
+      .typing { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <canvas class="fireworks"></canvas>
+
+  <div class="container">
+    <h1 id="mainHeading" class="animate__animated">🎁 Tap to Enter the Arena</h1>
+
+    <button id="btn1">Unleash Gadha Pahalwan</button>
+    <button id="btn2" style="display:none;">Witness the Birthday Flex 💥</button>
+    <button id="btn3" style="display:none;">Reveal the Memories 📸</button>
+    <button id="btn4" style="display:none;">Enter Free Fire Mode 🔫</button>
+
+    <div class="typing" id="messageBox" style="display:none;"></div>
+
+    <div class="carousel" id="carousel" style="display:none;">
+      <img src="IMG_3731.jpeg" alt="Memory 1" class="active" onerror="this.style.display='none'" />
+      <img src="IMG_3732.jpeg" alt="Memory 2" onerror="this.style.display='none'" />
+      <img src="IMG_3733.jpeg" alt="Memory 3" onerror="this.style.display='none'" />
+      <img src="IMG_3734.jpeg" alt="Memory 4" onerror="this.style.display='none'" />
+      <img src="IMG_3735.jpeg" alt="Memory 5" onerror="this.style.display='none'" />
+    </div>
+  </div>
+
+  <div class="container" id="ffZone" style="margin-top: 30px;">
+    <h1 style="color:#ff4500;">🔥 Gauri’s Free Fire Glory Zone 🔫</h1>
+    <p style="font-size:18px;">
+      They drop hot, loot hard, and clutch like a legend.<br/>
+      Presenting <strong>His Royal Noob-Slayerness</strong> — the youngest hero, the cushion warrior supreme.<br/>
+      He turns Bermuda into a vacation home and pillows into thrones.
+    </p>
+    <p style="font-size:16px; font-style:italic;">Legend says he clutches rounds while sitting on a pillow fortress. 👑</p>
+
+    <div class="carousel" id="ffCarousel">
+      <img src="ff1.jpeg" alt="Free Fire 1" class="active" onerror="this.style.display='none'" />
+      <img src="ff2.jpeg" alt="Free Fire 2" onerror="this.style.display='none'" />
+      <img src="ff3.jpeg" alt="Free Fire 3" onerror="this.style.display='none'" />
+    </div>
+  </div>
+
+  <audio id="bgSong" src="Song1.mp3" preload="auto" loop></audio>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fireworks-js@2.10.2/dist/index.umd.js"></script>
+
+  <script>
+    const btn1 = document.getElementById("btn1");
+    const btn2 = document.getElementById("btn2");
+    const btn3 = document.getElementById("btn3");
+    const btn4 = document.getElementById("btn4");
+    const mainHeading = document.getElementById("mainHeading");
+    const messageBox = document.getElementById("messageBox");
+    const carousel = document.getElementById("carousel");
+    const song = document.getElementById("bgSong");
+
+    // ✅ Final message
+    const message = `Dear Gauri (aka The Kill-Chor King 👑),
+
+Whether you're stealing kills, camping in corners, or hiding behind pillows, you're always the heart of the chaos (and the house).
+
+Happy Birthday to the smallest, funniest cousin in the squad —
+~ From your legendary big cousins 🎂💥`;
+
+    function typeMessage(text, index = 0) {
+      if (index < text.length) {
+        messageBox.textContent += text.charAt(index);
+        setTimeout(() => typeMessage(text, index + 1), 40);
+      }
+    }
+
+    btn1.addEventListener("click", () => {
+      btn1.style.display = "none";
+      mainHeading.textContent = "🎉 Gadha Pahalwan Enters the Chat";
+      mainHeading.classList.add("animate__rubberBand");
+      confetti({ particleCount: 120, spread: 100, origin: { y: 0.6 } });
+      fireworks.start();
+      song.play();
+      btn2.style.display = "block";
+    });
+
+    btn2.addEventListener("click", () => {
+      btn2.style.display = "none";
+      messageBox.style.display = "block";
+      typeMessage(message);
+      btn3.style.display = "block";
+      btn4.style.display = "block";
+    });
+
+    btn3.addEventListener("click", () => {
+      btn3.style.display = "none";
+      carousel.style.display = "block";
+      launchBalloons();
+      startCarousel();
+    });
+
+    btn4.addEventListener("click", () => {
+      btn4.style.display = "none";
+      document.getElementById("ffZone").scrollIntoView({ behavior: "smooth" });
+    });
+
+    function launchBalloons() {
+      for (let i = 0; i < 15; i++) {
+        const balloon = document.createElement("div");
+        balloon.className = "balloon";
+        balloon.style.left = Math.random() * 100 + "vw";
+        balloon.style.backgroundColor = getRandomColor();
+        balloon.style.animationDelay = Math.random() * 4 + "s";
+        document.body.appendChild(balloon);
+        setTimeout(() => balloon.remove(), 7500);
+      }
+    }
+
+    function getRandomColor() {
+      const colors = ["#ff4d4d", "#ff99cc", "#ffcc00", "#66ccff", "#99ff99"];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    let slideIndex = 0;
+    function startCarousel() {
+      const slides = document.querySelectorAll("#carousel img");
+      setInterval(() => {
+        slides[slideIndex].classList.remove("active");
+        slideIndex = (slideIndex + 1) % slides.length;
+        slides[slideIndex].classList.add("active");
+      }, 3000);
+    }
+
+    function startFFCarousel() {
+      const ffSlides = document.querySelectorAll("#ffCarousel img");
+      let ffIndex = 0;
+      setInterval(() => {
+        ffSlides[ffIndex].classList.remove("active");
+        ffIndex = (ffIndex + 1) % ffSlides.length;
+        ffSlides[ffIndex].classList.add("active");
+      }, 2500);
+    }
+
+    startFFCarousel();
+
+    const fireworks = new Fireworks.default(document.querySelector("canvas.fireworks"), {
+      rocketsPoint: 80,
+      opacity: 0.5,
+      acceleration: 1.05,
+      friction: 0.95,
+      gravity: 1.5,
+      particles: 80,
+      trace: 3,
+      explosion: 6,
+    });
+  </script>
+</body>
+</html>
